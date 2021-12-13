@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Notes Application</string>
+    <string name="title1">Note1</string>
+    <string name="title2">Note2</string>
+    <string name="title3">Note3</string>
+    <string name="title4">Note4</string>
+    <string name="title5">Note5</string>
+    <string name="title6">Note6</string>
+    <string name="title7">Note7</string>
+    <string name="description1">Описание записки Note1</string>
+    <string name="description2">Описание записки Note2</string>
+    <string name="description3">Описание записки Note3</string>
+    <string name="description4">Описание записки Note4</string>
+    <string name="description5">Описание записки Note5</string>
+    <string name="description6">Описание записки Note6</string>
+    <string name="description7">Описание записки Note7</string>
+
+
 </resources>
