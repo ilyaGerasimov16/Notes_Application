@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,9 +31,14 @@ public class NotesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
-
         NotesAdapter adapter = new NotesAdapter(data);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(),String.format("%s: %d - %s","Выбрана позиция", position, ((TextView)view).getText()), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

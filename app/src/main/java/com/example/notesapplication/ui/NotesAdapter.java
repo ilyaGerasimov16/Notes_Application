@@ -13,6 +13,7 @@ import com.example.notesapplication.R;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     private String[] dataSource;
+    private OnItemClickListener itemClickListener;
 
     public NotesAdapter (String[] dataSource) {
         this.dataSource = dataSource;
@@ -35,6 +36,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         return dataSource.length;
     }
 
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View v, int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textView;
@@ -42,6 +51,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = (TextView) itemView;
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (itemClickListener!= null) {
+                        itemClickListener.onItemClick(view, getAdapterPosition());
+                    }
+                }
+            });
         }
 
 
