@@ -24,6 +24,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     private NotesSource dataSource;
     private Fragment fragment;
     private OnItemClickListener itemClickListener;
+    private int menuPosition;
 
     public NotesAdapter (NotesSource dataSource, Fragment fragment) {
         this.dataSource = dataSource;
@@ -51,6 +52,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
     }
 
     public interface OnItemClickListener{
@@ -88,6 +93,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
                 @Override
                 public boolean onLongClick(View v) {
                     itemView.showContextMenu(10,10);
+                    menuPosition = getLayoutPosition();
                     return true;
                 }
             });
@@ -95,6 +101,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
         private void registerContextMenu(@NonNull View itemView) {
             if(fragment!= null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        menuPosition = getLayoutPosition();
+                        return false;
+                    }
+                });
                 fragment.registerForContextMenu(itemView);
             }
         }
