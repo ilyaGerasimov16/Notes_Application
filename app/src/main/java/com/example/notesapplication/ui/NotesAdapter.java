@@ -1,5 +1,6 @@
 package com.example.notesapplication.ui;
 
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,6 +80,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
                     if (itemClickListener!= null) {
                         itemClickListener.onItemClick(view, getAdapterPosition());
                     }
+                }
+            });
+
+            image.setOnLongClickListener(new View.OnLongClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public boolean onLongClick(View v) {
+                    itemView.showContextMenu(10,10);
+                    return true;
                 }
             });
         }
