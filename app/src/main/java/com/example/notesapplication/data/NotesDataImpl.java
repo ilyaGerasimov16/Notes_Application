@@ -50,4 +50,24 @@ public class NotesDataImpl implements NotesSource{
     public int size() {
         return dataSource.size();
     }
+
+    @Override
+    public void deleteNoteData(int position) {
+        dataSource.remove(position);
+    }
+
+    @Override
+    public void updateNoteData(int position, NoteData noteData) {
+        dataSource.set(position, noteData);
+    }
+
+    @Override
+    public void addNoteData(NoteData noteData) {
+        dataSource.add(noteData);
+    }
+
+    @Override
+    public void clearNoteData() {
+        dataSource.clear();
+    }
 }

@@ -14,6 +14,8 @@
     <string name="description5">Описание записки Note5</string>
     <string name="description6">Описание записки Note6</string>
     <string name="description7">Описание записки Note7</string>
+    <string name="add">Добавить</string>
+    <string name="action_clear">Очистить</string>
 
 
 </resources>
