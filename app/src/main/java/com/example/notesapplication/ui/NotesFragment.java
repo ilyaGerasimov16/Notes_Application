@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.example.notesapplication.data.NotesSource;
 
 public class NotesFragment extends Fragment {
 
+    private static final long MY_DEFAULT_DURATION = 1000;
     private NotesSource data;
     private NotesAdapter adapter;
     private RecyclerView recyclerView;
@@ -51,7 +53,7 @@ public class NotesFragment extends Fragment {
                         R.drawable.picture1,
                         false));
                 adapter.notifyItemInserted(data.size() - 1);
-                recyclerView.scrollToPosition(data.size()-1);
+                recyclerView.smoothScrollToPosition(data.size()-1);
                 return true;
             case R.id.action_clear:
                 data.clearNoteData();
@@ -103,6 +105,11 @@ public class NotesFragment extends Fragment {
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, null));
         recyclerView.addItemDecoration(itemDecoration);
+
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(MY_DEFAULT_DURATION);
+        animator.setRemoveDuration(MY_DEFAULT_DURATION);
+        recyclerView.setItemAnimator(animator);
 
         adapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
             @Override
