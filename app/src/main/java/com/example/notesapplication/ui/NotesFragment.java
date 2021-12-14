@@ -1,5 +1,6 @@
 package com.example.notesapplication.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,10 +19,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notesapplication.MainActivity;
+import com.example.notesapplication.Navigation;
 import com.example.notesapplication.R;
 import com.example.notesapplication.data.NoteData;
 import com.example.notesapplication.data.NotesDataImpl;
 import com.example.notesapplication.data.NotesSource;
+import com.example.notesapplication.observe.Observer;
+import com.example.notesapplication.observe.Publisher;
 
 public class NotesFragment extends Fragment {
 
@@ -29,6 +34,14 @@ public class NotesFragment extends Fragment {
     private NotesSource data;
     private NotesAdapter adapter;
     private RecyclerView recyclerView;
+    private Navigation navigation;
+    private Publisher publisher;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        data = new NotesDataImpl(getResources()).init();
+    }
 
     @Nullable
     @Override
@@ -48,12 +61,14 @@ public class NotesFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add:
-                data.addNoteData(new NoteData("Заголовок " + data.size(),
-                        "Описание " + data.size(),
-                        R.drawable.picture1,
-                        false));
-                adapter.notifyItemInserted(data.size() - 1);
-                recyclerView.smoothScrollToPosition(data.size()-1);
+                navigation.addFragment(NoteFragment.newInstance(), true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNoteData(NoteData noteData) {
+                        data.addNoteData(noteData);
+                        adapter.notifyItemInserted(data.size() - 1);
+                    }
+                });
                 return true;
             case R.id.action_clear:
                 data.clearNoteData();
@@ -75,12 +90,14 @@ public class NotesFragment extends Fragment {
         int position = adapter.getMenuPosition();
         switch (item.getItemId()){
             case R.id.action_update:
-                data.updateNoteData(position,
-                        new NoteData("Заметка " + position,
-                                data.getNoteData(position).getDescription(),
-                                data.getNoteData(position).getPicture(),
-                                false));
-                adapter.notifyItemChanged(position);
+                navigation.addFragment(NoteFragment.newInstance(data.getNoteData(position)),true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNoteData(NoteData noteData) {
+                        data.updateNoteData(position, noteData);
+                        adapter.notifyItemChanged(position);
+                    }
+                });
                 return true;
             case R.id.action_delete:
                 data.deleteNoteData(position);
@@ -90,9 +107,23 @@ public class NotesFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity) context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
+    }
+
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_lines);
-        data = new NotesDataImpl(getResources()).init();
         initRecyclerView();
     }
 

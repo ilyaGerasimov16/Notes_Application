@@ -18,6 +18,8 @@ import com.example.notesapplication.R;
 import com.example.notesapplication.data.NoteData;
 import com.example.notesapplication.data.NotesSource;
 
+import java.text.SimpleDateFormat;
+
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     private final static String TAG = "NotesAdapter";
@@ -25,6 +27,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     private Fragment fragment;
     private OnItemClickListener itemClickListener;
     private int menuPosition;
+    private TextView date;
 
     public NotesAdapter (NotesSource dataSource, Fragment fragment) {
         this.dataSource = dataSource;
@@ -75,6 +78,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             description = itemView.findViewById(R.id.description);
             image = itemView.findViewById(R.id.imageView);
             like = itemView.findViewById(R.id.like);
+            date = itemView.findViewById(R.id.date);
 
             registerContextMenu(itemView);
 
@@ -117,6 +121,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             description.setText(noteData.getDescription());
             like.setChecked(noteData.isLike());
             image.setImageResource(noteData.getPicture());
+            date.setText(new SimpleDateFormat("dd-MM-yy").format(noteData.getDate()));
         }
     }
 }
