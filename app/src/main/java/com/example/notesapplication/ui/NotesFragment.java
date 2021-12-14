@@ -1,6 +1,7 @@
 package com.example.notesapplication.ui;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,6 +61,24 @@ public class NotesFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = requireActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.note_menu,menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_update:
+                return true;
+            case R.id.action_delete:
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_lines);
         data = new NotesDataImpl(getResources()).init();
@@ -69,7 +88,7 @@ public class NotesFragment extends Fragment {
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
 
-        adapter = new NotesAdapter(data);
+        adapter = new NotesAdapter(data, this);
         recyclerView.setAdapter(adapter);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);

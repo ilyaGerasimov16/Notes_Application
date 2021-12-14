@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notesapplication.R;
@@ -19,10 +20,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
     private final static String TAG = "NotesAdapter";
     private NotesSource dataSource;
+    private Fragment fragment;
     private OnItemClickListener itemClickListener;
 
-    public NotesAdapter (NotesSource dataSource) {
+    public NotesAdapter (NotesSource dataSource, Fragment fragment) {
         this.dataSource = dataSource;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -66,6 +69,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             image = itemView.findViewById(R.id.imageView);
             like = itemView.findViewById(R.id.like);
 
+            registerContextMenu(itemView);
+
+
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,6 +80,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
                     }
                 }
             });
+        }
+
+        private void registerContextMenu(@NonNull View itemView) {
+            if(fragment!= null) {
+                fragment.registerForContextMenu(itemView);
+            }
         }
 
         public void bind(NoteData noteData) {

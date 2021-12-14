@@ -16,6 +16,8 @@
     <string name="description7">Описание записки Note7</string>
     <string name="add">Добавить</string>
     <string name="action_clear">Очистить</string>
+    <string name="update">Изменить</string>
+    <string name="delete">Удалить</string>
 
 
 </resources>
