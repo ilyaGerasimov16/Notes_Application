@@ -73,4 +73,5 @@ public class NoteData implements Parcelable {
     public Date getDate() {
         return date;
     }
+
 }
